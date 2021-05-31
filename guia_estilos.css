@@ -1,0 +1,82 @@
+table {
+  border-spacing: 25px;
+}
+
+table, th, td {
+  border: 1px solid black;
+  /*border-collapse: collapse;*/
+  border-collapse: separate;
+}
+
+th, td {
+  padding: 15px;
+  width: 100px; /*solo para los colores*/
+}
+
+th {
+  text-align: left;
+}
+
+.a {
+	font-family: Georgia;
+    font-size: 50px;
+}
+
+.b {
+	color: #18171c;
+	text-decoration: none;
+	font-size: 20px;
+	font-family: Tahoma;
+}
+
+.c {
+	font-family: Tahoma;
+	color: #464549;
+	font-size: 24px;
+	font-weight:normal; 
+}
+
+.d {
+	font-family: Tahoma;
+	color: #464549;
+	font-size: 20px;
+}
+
+.e {
+	font-family: Tahoma;
+	color: #464549;
+	font-size: 20px;
+}
+
+.col_letra{
+	font-size: 24px;
+}
+
+.a-link, .p, .li, .strong, .blockquote, .label, .input, .th, .td, .span{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 25px;
+}
+
+.h1{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 40px;
+}
+
+.h2{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 32px;
+}
+
+.button{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
+}
+
+.redSocial{
+    font-size: 30px !important;
+    color: black !important;
+}
+
+.textoFondo{
+    background-color: tomato !important;
+}

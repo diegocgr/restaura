@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>RestAura</title>
+    <link rel="icon" href="icono.png">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 mt-2">
+          <nav class="navbar px-0 justify-content-between">
+            <a class="navbar-brand titulo" href="index.html">RestAura</a>
+
+            <a id="refForo" href="foro.html">Foro</a>
+            <a id="refConversacion" href="conversacion.html">Conversación</a>
+            <a id="refRegistro" href="registro.html">Registro</a>
+            <a id="refAdministracion" href="administracion.html" class="noMostrar">Administración</a>
+
+            <form class="form-inline">
+              <div id="bloqueIniciarSesion">
+                <input id="correo" class="form-control mr-sm-2" type="email" placeholder="Correo electrónico..." aria-label="correoElectronico">
+                <input id="contrasena" class="form-control mr-sm-2" type="password" placeholder="Contraseña..." aria-label="contrasena">
+                <button id="sesion" class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit">Iniciar sesión</button>
+              </div>
+              <span id="mensajeBienvenida" class="noMostrar">Bienvenido <strong id="nombreUsuario"></strong> </span> 
+              <button id="desconectar" class="btn btn-danger my-2 my-sm-0 mr-sm-2" type="submit">Desconectar</button>
+            </form>
+          </nav>
+
+          <div class="separador"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+          <div id="bloqueUsuario" class="col-md-12 noMostrar"></div>
+        </div>
+
+        <div class="row">
+          <div id="bloqueTema" class="col-md-12 noMostrar mt-4"></div>
+        </div>
+    </div>
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        getURLID();
+      });
+
+      function getURLID(){
+        var url = window.location.href;
+        var urlID = url.split("=")[1];
+        console.log(urlID);
+        mostrarTema2(urlID);
+      }
+
+      function mostrarTema2(urlID){
+        var categoriaID = urlID;
+        // alert(urlID);
+        var contenidoTema = "";
+        var contenidoFormulario = "";
+        contenidoFormulario+=`
+            <form>
+                <div class="form-group">
+                    <label for="mensajeParaTema">Tu respuesta</label>
+                    <textarea class="form-control" id="mensajeParaTema" rows="2" placeholder="Escribe aquí tu respuesta"></textarea>
+                </div>
+                <button id="enviarMensajeParaTema" type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        `; 
+
+        $.ajax({
+            url: 'main.php',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {functionToCall: 'mostrarMensajes', categoriaID: categoriaID},
+            success: function(data){
+                console.log(data);
+
+                var titulo = data[0].categoria;
+                contenidoTema+=`<h1 id="tituloTema">${titulo}</h1>`;
+
+                for(var i=0; i<data.length; i++){
+                    var correo = data[i].correo;
+                    var mensaje = data[i].mensaje;
+                    var conectado = data[i].conectado;
+
+                    // contenidoTema+= `<p class="mt-1 filaMensaje"> <span class="conectadoP"></span> <span class="correoP">${correo.split("@")[0]}</span> <span class="mensajeP">${mensaje}</span> </p>`;
+
+                    if(conectado==1){
+                        // conectado = "conectado";
+                        contenidoTema+= `<p class="mt-1 filaMensaje"> <span class="puntoVerde"></span> <span class="correoP">${correo.split("@")[0]}</span> <span class="mensajeP">${mensaje}</span> <button type="button" class="btn btn-danger eliminarComentario noMostrar">Eliminar</button> </p>`;
+                    }else{
+                        // conectado = "desconectado";
+                        contenidoTema+= `<p class="mt-1 filaMensaje"> <span class="puntoRojo"></span> <span class="correoP">${correo.split("@")[0]}</span> <span class="mensajeP">${mensaje}</span> <button type="button" class="btn btn-danger eliminarComentario noMostrar">Eliminar</button> </p>`;
+                    }
+                }
+
+                $("#bloqueUsuario").html(contenidoTema);
+                $("#bloqueTema").html(contenidoFormulario);
+                $("#enviarMensajeParaTema").click(escribirMensajeParaTema);
+
+                $(".eliminarComentario").click(function(){
+                  // alert("hola");
+                  var comentarioToEliminar = "";
+                  console.log($(this).prev().text());
+                  comentarioToEliminar = $(this).prev().text();
+                  eliminarComentario(comentarioToEliminar);
+                });
+            },
+            error: function(data){
+                console.log(data);
+            }
+        })
+      }
+
+      function eliminarComentario(comentarioToEliminar){
+        $.ajax({
+          url: 'main.php',
+          type: 'POST',
+          data: {functionToCall: 'eliminarComentario', comentarioToEliminar: comentarioToEliminar},
+          success: function(data){
+              console.log(data);
+              // $("#URLConversaciones").html(data);
+          },
+          error: function(data){
+              console.log(data);
+          }
+        })
+      }
+
+      function escribirMensajeParaTema(event){
+        // alert("hola");
+        var tema = $("#tituloTema").html();
+        var mensaje = $("#mensajeParaTema").val();
+
+        $.ajax({
+            url: 'main.php',
+            type: 'POST',
+            data: {functionToCall: 'escribirMensajeParaTema', tema: tema, mensaje: mensaje},
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data){
+                console.log(data);
+            }
+        })
+
+        event.preventDefault();
+      }
+    </script>
+
+  </body>
+</html>

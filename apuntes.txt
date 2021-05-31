@@ -1,0 +1,86 @@
+CREATE TABLE usuarios(
+	id integer unsigned auto_increment primary key,
+	correo varchar(30) not null,
+	contrasena varchar(10) not null,
+	conectado boolean not null
+);
+
+INSERT INTO usuarios(correo, contrasena, conectado) VALUES('diegocgr@gmail.com', 'hirule93', false);
+
+CREATE TABLE categorias(
+	id integer unsigned auto_increment primary key,
+	categoria varchar(50) not null,
+	descripcion varchar(50) not null
+);
+
+INSERT INTO categorias(categoria, descripcion) VALUES('Presentaciones', 'Para exponer quién eres');
+
+CREATE TABLE mensajes(
+	id integer unsigned auto_increment primary key,
+	mensaje varchar(500) not null,
+	usuarioID integer not null,
+	categoriaID integer not null
+);
+
+select mensajes.mensaje, usuarios.correo 
+from mensajes
+inner join usuarios on mensajes.usuarioID=usuarios.id
+order by mensajes.id
+where mensajes.mensaje=`hola`;
+
+select mensajes.id, mensajes.mensaje, usuarios.correo 
+from mensajes
+inner join usuarios on mensajes.usuarioID=usuarios.id
+where mensajes.mensaje='hola'
+order by mensajes.id;
+
+select mensajes.id, mensajes.mensaje, usuarios.correo 
+from mensajes
+inner join usuarios on mensajes.usuarioID=usuarios.id
+where mensajes.categoriaID=4
+order by mensajes.id;
+
+CREATE TABLE administradores(
+	id integer unsigned auto_increment primary key,
+	correo varchar(30) not null,
+	contrasena varchar(10) not null,
+	conectado boolean not null
+);
+
+INSERT INTO administradores(correo, contrasena, conectado) VALUES('terapeuta1@gmail.com', '*Restaura1', false);
+
+CREATE TABLE conversacion(
+	id integer unsigned auto_increment primary key,
+	mensaje varchar(500) not null,
+	redactor varchar(50) not null,
+	usuarioID integer not null,
+	administradorID integer not null
+);
+
+INSERT INTO conversacion(mensaje, redactor, usuarioID, administradorID) VALUES ('primera prueba de chat', 'diegocgr@gmail.com', 1, 4);
+INSERT INTO conversacion(mensaje, redactor, usuarioID, administradorID) VALUES ('otra prueba de chat', 'diego-x-d@hotmail.com', 2, 4);
+
+ALTER TABLE usuarios ADD COLUMN administrador boolean not null AFTER conectado;
+
+SELECT conversacion.mensaje, conversacion.redactor, usuarios.conectado 
+FROM conversacion 
+INNER JOIN usuarios on conversacion.usuarioID=usuarios.id 
+WHERE conversacion.administradorID=4
+AND conversacion.usuarioID=(SELECT id FROM usuarios WHERE correo='diegocgr@gmail.com') 
+ORDER BY conversacion.id;
+
+select distinct(redactor) from conversacion where administradorID = (select id from usuarios where correo = 'terapeuta1@gmail.com');
+
+select conversacion.redactor, usuarios.id from conversacion inner join usuarios on conversacion.usuarioID=usuarios.id where administradorID = (select id from usuarios where correo = 'terapeuta1@gmail.com');
+
+select distinct(conversacion.redactor), usuarios.id from conversacion inner join usuarios on conversacion.usuarioID=usuarios.id where administradorID = (select id from usuarios where correo = 'terapeuta1@gmail.com');
+
+SELECT DISTINCT(conversacion.redactor), usuarios.id FROM conversacion INNER JOIN usuarios ON conversacion.usuarioID=usuarios.id where administradorID =(SELECT id FROM usuarios WHERE correo='terapeuta1@gmail.com') and redactor <> 'terapeuta1@gmail.com';
+
+
+
+
+
+
+
+

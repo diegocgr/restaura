@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>RestAura</title>
+    <link rel="icon" href="icono.png">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 mt-2">
+          <nav class="navbar px-0 justify-content-between">
+            <a class="navbar-brand titulo" href="index.html">RestAura</a>
+
+            <a id="refForo" href="foro.html">Foro</a>
+            <a id="refConversacion" href="conversacion.html">Conversación</a>
+            <a id="refRegistro" href="registro.html">Registro</a>
+            <a id="refAdministracion" href="administracion.html" class="noMostrar">Administración</a>
+
+            <form class="form-inline">
+              <div id="bloqueIniciarSesion">
+                <input id="correo" class="form-control mr-sm-2" type="email" placeholder="Correo electrónico..." aria-label="correoElectronico">
+                <input id="contrasena" class="form-control mr-sm-2" type="password" placeholder="Contraseña..." aria-label="contrasena">
+                <button id="sesion" class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit">Iniciar sesión</button>
+              </div>
+              <span id="mensajeBienvenida" class="noMostrar">Bienvenido <strong id="nombreUsuario"></strong> </span> 
+              <button id="desconectar" class="btn btn-danger my-2 my-sm-0 mr-sm-2" type="submit">Desconectar</button>
+            </form>
+          </nav>
+
+          <div class="separador"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div id="bloqueAdministracion" class="col-md-12 noMostrar">
+            <h1>Página de administración</h1>
+            <h2 class="mt-4">Gestión de usuarios</h2>
+            <div id="tablaUsuarios"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="bloqueContacto" class="col-md-12 noMostrar">
+          <h2 class="mt-4">Gestión de mensajes de contacto</h2>
+            <div id="tablaContacto"></div>
+        </div>
+      </div>
+    </div>
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+
+    <script>
+        $(document).ready(function(){
+          generarTablaUsuarios();
+          generarTablaContacto();
+        });
+
+        function generarTablaUsuarios(){
+            var rellenoTablaUsuarios = "";
+            rellenoTablaUsuarios+= '<table class="table table-hover table-bordered">';
+            rellenoTablaUsuarios+= '<thead class="thead-dark"><tr> <th scope="col">id</th> <th scope="col">correo</th> <th scope="col">contraseña</th> <th scope="col">conectado</th> <th scope="col">administrador</th> <th scope="col">modificar</th> <th scope="col">eliminar</th> </tr></thead>';
+
+            $.ajax({
+                url: 'main.php',
+                type: 'POST',
+                data: {functionToCall: 'getUsuarios'},
+                success: function(data){
+                    console.log(data);
+
+                    for(var i=0; i<data.length; i++){
+                        var id = data[i].id;
+                        var correo = data[i].correo;
+                        var contrasena = data[i].contrasena;
+                        var conectado = data[i].conectado;
+                        var administrador = data[i].administrador;
+
+                        rellenoTablaUsuarios+=`<tr>`;
+                        rellenoTablaUsuarios+= `<td> <input id="id${id}" class="anchoInteger" type="text" value="${id}"> </td>`;
+                        rellenoTablaUsuarios+= `<td> <input id="correo${id}" type="text" value="${correo}"> </td>`;
+                        rellenoTablaUsuarios+= `<td> <input id="contrasena${id}" class="anchoContrasena" type="text" value="${contrasena}"> </td>`;
+                        rellenoTablaUsuarios+= `<td> <input id="conectado${id}" class="anchoInteger" type="text" value="${conectado}"> </td>`;
+                        rellenoTablaUsuarios+= `<td> <input id="administrador${id}" class="anchoInteger" type="text" value="${administrador}"> </td>`;
+                        rellenoTablaUsuarios+= `<td> <button data-id="${id}" type="button" class="btn btn-warning">Modificar</button> </td>`;
+                        rellenoTablaUsuarios+= `<td> <button data-id="${id}" type="button" class="btn btn-danger">Eliminar</button> </td>`;
+                        rellenoTablaUsuarios+=`</tr>`;
+                    }
+
+                    rellenoTablaUsuarios+=`</table>`;
+                    $('#tablaUsuarios').html(rellenoTablaUsuarios);
+
+                    $(".btn-warning").click(function(){
+                        // alert($(this).parent().data("id"));
+                        // var categoriaID = $(this).data("id");
+                        // var titulo = $(this)[0].innerText;
+                        // mostrarTema(titulo, categoriaID);
+                        // alert($(this).data("id"));
+                        var idUsuario = $(this).data("id");
+                        modificarUsuario(idUsuario);
+                    });
+
+                    $(".btn-danger").click(function(){
+                        // alert($(this).parent().data("id"));
+                        // var categoriaID = $(this).data("id");
+                        // var titulo = $(this)[0].innerText;
+                        // mostrarTema(titulo, categoriaID);
+                        // alert($(this).data("id"));
+                        var idUsuario = $(this).data("id");
+                        eliminarUsuario(idUsuario);
+                    });
+
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            })
+        }
+
+        function modificarUsuario(idUsuario){
+            // alert(idUsuario);
+            // alert($("#correo1").val());
+            var infoID = $(`#id${idUsuario}`).val();
+            // alert(infoID);
+            var infoCorreo = $(`#correo${idUsuario}`).val();
+            var infoContrasena = $(`#contrasena${idUsuario}`).val();
+            var infoConectado = $(`#conectado${idUsuario}`).val();
+            var infoAdministrador = $(`#administrador${idUsuario}`).val();
+
+            $.ajax({
+                url: 'main.php',
+                type: 'POST',
+                data: {functionToCall: 'modificarUsuario', infoID: infoID, infoCorreo: infoCorreo, infoContrasena: infoContrasena, infoConectado: infoConectado, infoAdministrador: infoAdministrador},
+                success: function(data){
+                    console.log(data);   
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            })
+        }
+
+        function eliminarUsuario(idUsuario){
+          // alert(idUsuario);
+          var infoID = $(`#id${idUsuario}`).val();
+
+          $.ajax({
+                url: 'main.php',
+                type: 'POST',
+                data: {functionToCall: 'eliminarUsuario', infoID: infoID},
+                success: function(data){
+                    console.log(data);   
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            })
+        }
+
+        function generarTablaContacto(){
+            var rellenoTablaContacto = "";
+            rellenoTablaContacto+= '<table class="table table-hover table-bordered">';
+              rellenoTablaContacto+= '<thead class="thead-dark"><tr> <th scope="col">id</th> <th scope="col">correo</th> <th scope="col">concepto</th> <th scope="col">mensaje</th> <th scope="col">fecha</th> </tr></thead>';
+
+            $.ajax({
+                url: 'main.php',
+                type: 'POST',
+                data: {functionToCall: 'getContacto'},
+                success: function(data){
+                    console.log(data);
+
+                    for(var i=0; i<data.length; i++){
+                        var id = data[i].id;
+                        var correo = data[i].correo;
+                        var concepto = data[i].concepto;
+                        var mensaje = data[i].mensaje;
+                        var fecha = data[i].fecha;
+
+                        rellenoTablaContacto+=`<tr>`;
+                        rellenoTablaContacto+= `<td>${id}</td>`;
+                        rellenoTablaContacto+= `<td>${correo}</td>`;
+                        rellenoTablaContacto+= `<td>${concepto}</td>`;
+                        rellenoTablaContacto+= `<td>${mensaje}</td>`;
+                        rellenoTablaContacto+= `<td>${fecha}</td>`;
+                        rellenoTablaContacto+=`</tr>`;
+                    }
+
+                    rellenoTablaContacto+=`</table>`;
+                    $('#tablaContacto').html(rellenoTablaContacto);
+
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            })
+        }
+    </script>
+
+  </body>
+</html>

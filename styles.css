@@ -1,0 +1,153 @@
+body{
+    /* background-color: wheat; */
+    font-family: 'Montserrat', sans-serif;
+    /* color: tomato !important; */
+    font-size: 25px !important;
+}
+a{
+    color: tomato !important;
+}
+a:hover{
+    background-color: tomato;
+    color: wheat !important;
+    border: 0.5 solid black;
+    text-decoration: none;
+}
+.mostrar{
+    display: block;
+}
+.divUsuario{
+    color: black;
+}
+.noMostrar{
+    display: none;
+}
+.class_nombre{
+    color: black;
+}
+.titulo{
+    font-family: Georgia;
+    font-size: 50px;
+    margin-bottom: 25px;
+}
+.separador{
+    height: 50px;
+}
+.redSocial{
+    font-size: 30px;
+    color: black !important;
+}
+
+.aviso{
+    font-size: 15px !important;
+    color: red !important;
+}
+
+.infoContrasena{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.fondo{
+    background-image: url('fondo5.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-attachment: fixed; */
+    background-position: center;
+    /* color: wheat !important; */
+}
+
+.textoFondo{
+    background-color: tomato !important;
+}
+
+.fondoRegistro{
+    background-image: url('fondo6.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-attachment: fixed; */
+    background-position: bottom;
+    /* position: relative; */
+    /* height: 200px; */
+}
+
+input, textarea{
+    border: 1px solid black !important;
+}
+
+.marginBienvenido{
+    margin-right: 20px !important;
+}
+
+th{
+    text-align: center;
+}
+
+.correoP{
+    width: 200px !important;
+    display: inline-block;
+}
+
+.mensajeP{
+    /* width: 70% !important; */
+    display: inline-block;
+}
+
+.conectadoP{
+    /* width: 200px !important; */
+    /* display: inline-block; */
+    color: black;
+}
+
+.filaMensaje{
+    /* border: 0.5px solid tomato; */
+    display: inline-block;
+    height: 75px !important;
+    width: 100%;
+    line-height: 75px;
+    padding-left: 1%;
+    padding-right: 1%;
+    /* padding: 1%; */
+}
+
+.puntoVerde{
+    height: 25px;
+    width: 25px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.puntoRojo{
+    height: 25px;
+    width: 25px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.filaConversacion{
+    display: inline-block;
+    height: 75px !important;
+    width: 100%;
+    line-height: 75px;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.anchoInteger{
+    width: 75px !important;
+}
+
+.anchoContrasena{
+    width: 150px !important;
+}
+
+.errorIniciarSesion{
+    background-color: red !important;
+    color: white !important;
+}
+
+.eliminarComentario{
+    color: black;
+}
